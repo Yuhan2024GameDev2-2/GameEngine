@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
-///  GameManager.instance 로 어디서든 사용 가능!
+/// GameManager.instance 로 어디서든 사용 가능!
 /// </summary>
 public class GameManager : MonoBehaviour
 {
@@ -33,8 +33,17 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    public TeamData user_Team;
 
-   
+    public void KickPlayerFromTeam(int index)
+    {
+        user_Team.removePlayer(index);
+    }
+    public void SetTeam(TeamData input)
+    {
+        user_Team.SetTeamData(input);
+    }
+
     public void ExitGame()
     {
         SaveManager.instance.SaveGameData();

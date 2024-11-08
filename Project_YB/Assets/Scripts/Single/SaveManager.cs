@@ -1,6 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+
+public class Data
+{
+    public TeamData user_team = new TeamData();
+    public PlayerData[] player_data = new PlayerData[18];
+    public int money;
+}
 
 public class SaveManager : MonoBehaviour
 {
@@ -12,6 +20,8 @@ public class SaveManager : MonoBehaviour
     }
     [SerializeField]
     private Platform platform;
+    public Data savedata = new();
+    
 
     private static SaveManager _instance;
     public static SaveManager instance
@@ -48,9 +58,17 @@ public class SaveManager : MonoBehaviour
 
     public void SaveGameData()
     {
+        savedata.user_team = GameManager.instance.user_Team;
+        for(int i = 0; i < savedata.player_data.Length; i++)
+        {
+            savedata.player_data[i] = GameManager.instance.user_Team.playerPool[i];
+        }
+        savedata.money = MoneyManager.instance.GetMoney();
+        var jsonSaveData = JsonUtility.ToJson(savedata);
+
         if (platform == Platform.PC)
         {
-
+            File.WriteAllText("Assets\\data.json", jsonSaveData);
         }
         if (platform == Platform.Android)
         {
@@ -61,12 +79,19 @@ public class SaveManager : MonoBehaviour
     {
         if (platform == Platform.PC)
         {
-
+            savedata = JsonUtility.FromJson<Data>(File.ReadAllText("Assets\\data.json"));
         }
         if (platform == Platform.Android)
         {
 
         }
+        GameManager.instance.SetTeam(savedata.user_team);
+        for (int i = 0; i < savedata.player_data.Length; i++)
+        {
+            GameManager.instance.user_Team.playerPool[i] = savedata.player_data[i];
+        }
+        MoneyManager.instance.SetMoney(savedata.money);
+
     }
 }
 

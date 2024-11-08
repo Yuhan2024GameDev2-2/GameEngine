@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoneyManager : MonoBehaviour
 {
-    private static int Money;
+    private int Money;
     private static MoneyManager _instance;
     public static MoneyManager instance
     {
@@ -38,8 +38,12 @@ public class MoneyManager : MonoBehaviour
     {
         Money = Money - moneyInput;
     }
-    public string GetMoney()
+    public int GetMoney()
     {
-        return Money.ToString() + "만";
+        return Money;
+    }
+    public void SetMoney(int input)
+    {
+        Money = input;
     }
 }
