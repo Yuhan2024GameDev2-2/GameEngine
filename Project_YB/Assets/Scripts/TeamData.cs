@@ -6,12 +6,19 @@ using UnityEngine;
 
 public class TeamData : MonoBehaviour
 {
-    int backNumber;
-    string firstName;
-    string lastName;
-
     public PlayerData[] playerPool = new PlayerData[18];
-    public PlayerData p1 = new PlayerData();
+
+    public TeamData GetTeamData()
+    {
+        return this;
+    }
+    public void SetTeamData(TeamData inputData)
+    {
+        for(int i = 0; i < playerPool.Length; i++)
+        {
+            playerPool[i] = inputData.playerPool[i];
+        }
+    }
 
     public int AddPlayer(PlayerData player)
     {
